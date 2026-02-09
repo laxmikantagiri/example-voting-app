@@ -1,0 +1,72 @@
+trigger:
+- main
+
+variables:
+  imageTag: $(Build.BuildId)
+
+stages:
+- stage: Build
+  displayName: Build & Push Images
+  jobs:
+  - job: BuildAndPush
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build & Push vote
+      inputs:
+        containerRegistry: acr-voting-sc
+        repository: vote
+        command: buildAndPush
+        Dockerfile: vote/Dockerfile
+        tags: |
+          $(imageTag)
+
+    - task: Docker@2
+      displayName: Build & Push result
+      inputs:
+        containerRegistry: acr-voting-sc
+        repository: result
+        command: buildAndPush
+        Dockerfile: result/Dockerfile
+        tags: |
+          $(imageTag)
+
+    - task: Docker@2
+      displayName: Build & Push worker
+      inputs:
+        containerRegistry: acr-voting-sc
+        repository: worker
+        command: buildAndPush
+        Dockerfile: worker/Dockerfile
+        tags: |
+          $(imageTag)
+
+- stage: Deploy
+  displayName: Deploy to AKS
+  dependsOn: Build
+  jobs:
+  - job: DeployToAKS
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+
+    - task: AzureKeyVault@2
+      displayName: Fetch secrets from Key Vault
+      inputs:
+        azureSubscription: azure-subscription-sc
+        KeyVaultName: kv-voting-app
+        SecretsFilter: '*'
+
+    - task: KubernetesManifest@1
+      displayName: Deploy Kubernetes manifests
+      inputs:
+        action: deploy
+        kubernetesServiceConnection: aks-voting-sc
+        manifests: |
+          k8s-specifications/*.yaml
+        containers: |
+          votingacr123.azurecr.io/vote:$(imageTag)
+          votingacr123.azurecr.io/result:$(imageTag)
+          votingacr123.azurecr.io/worker:$(imageTag)
+
