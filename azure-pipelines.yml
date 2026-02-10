@@ -15,7 +15,7 @@ stages:
     - task: Docker@2
       displayName: Build & Push vote
       inputs:
-        containerRegistry: acr-voting-sc
+        containerRegistry: votingacr123
         repository: vote
         command: buildAndPush
         Dockerfile: vote/Dockerfile
@@ -25,7 +25,7 @@ stages:
     - task: Docker@2
       displayName: Build & Push result
       inputs:
-        containerRegistry: acr-voting-sc
+        containerRegistry: votingacr123
         repository: result
         command: buildAndPush
         Dockerfile: result/Dockerfile
@@ -35,7 +35,7 @@ stages:
     - task: Docker@2
       displayName: Build & Push worker
       inputs:
-        containerRegistry: acr-voting-sc
+        containerRegistry: votingacr123
         repository: worker
         command: buildAndPush
         Dockerfile: worker/Dockerfile
