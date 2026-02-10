@@ -10,7 +10,7 @@ stages:
   jobs:
   - job: BuildAndPush
     pool:
-      vmImage: ubuntu-latest
+      name: self-hosted-pool
     steps:
     - task: Docker@2
       displayName: Build & Push vote
@@ -48,7 +48,7 @@ stages:
   jobs:
   - job: DeployToAKS
     pool:
-      vmImage: ubuntu-latest
+      name: self-hosted-pool
     steps:
 
     - task: AzureKeyVault@2
