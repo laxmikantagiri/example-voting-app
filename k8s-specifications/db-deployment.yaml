@@ -21,13 +21,25 @@ spec:
         - name: POSTGRES_USER
           value: postgres
         - name: POSTGRES_PASSWORD
-          value: postgres
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_PASSWORD
         ports:
         - containerPort: 5432
           name: postgres
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
           name: db-data
+        - name: secrets-store
+          mountPath: /mnt/secrets
+          readOnly: true
       volumes:
       - name: db-data
         emptyDir: {} 
+      - name: secrets-store
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: kv-postgres

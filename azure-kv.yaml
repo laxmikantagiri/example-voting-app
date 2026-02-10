@@ -1,0 +1,21 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: kv-postgres
+spec:
+  provider: azure
+  parameters:
+    keyvaultName: kv-voting-app
+    tenantId: 4a778def-25b1-4f3a-815b-4cc1832ceebb
+    objects: |
+      array:
+        - |
+          objectName: postgres-password
+          objectType: secret
+  secretObjects:
+  - secretName: db-secret
+    type: Opaque
+    data:
+    - objectName: postgres-password
+      key: POSTGRES_PASSWORD
+
