@@ -50,14 +50,6 @@ stages:
     pool:
       name: self-hosted-pool
     steps:
-
-    - task: AzureKeyVault@2
-      displayName: Fetch secrets from Key Vault
-      inputs:
-        azureSubscription: azure-subscription-sc
-        KeyVaultName: kv-voting-app
-        SecretsFilter: '*'
-
     - task: KubernetesManifest@1
       displayName: Deploy Kubernetes manifests
       inputs:

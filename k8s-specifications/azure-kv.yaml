@@ -9,6 +9,8 @@ spec:
     clientID: 23f3746b-e97a-4440-ad18-c11a6281ffa7
     keyvaultName: kv-voting-app
     tenantId: 4a778def-25b1-4f3a-815b-4cc1832ceebb
+    usePodIdentity: "false"
+    useVMManagedIdentity: "false"
     objects: |
       array:
         - |
