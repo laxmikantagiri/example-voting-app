@@ -5,8 +5,10 @@ metadata:
 spec:
   provider: azure
   parameters:
+    useWorkloadIdentity: "true"
+    clientID: 23f3746b-e97a-4440-ad18-c11a6281ffa7
     keyvaultName: kv-voting-app
-    tenantId: 4a778def-25b1-4f3a-815b-4cc1832ceebb
+    tenantId: 4931ba2c-07c3-4ac5-81ad-3b26c008f85d
     objects: |
       array:
         - |
