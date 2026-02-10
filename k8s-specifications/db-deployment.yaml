@@ -30,14 +30,14 @@ spec:
         - containerPort: 5432
           name: postgres
         volumeMounts:
-        - mountPath: /var/lib/postgresql/data
-          name: db-data
         - name: secrets-store
           mountPath: /mnt/secrets
           readOnly: true
+        - mountPath: /var/lib/postgresql/data
+          name: db-data
       volumes:
       - name: db-data
-        emptyDir: {} 
+        emptyDir: {}
       - name: secrets-store
         csi:
           driver: secrets-store.csi.k8s.io
